@@ -57,7 +57,7 @@ for eth in ethnicities:
                       (mae_eth['Ethnicity'] == eth)]['MAE'].mean()
         mae_values.append(val)
     ax.plot(model_labels, mae_values,
-            marker='o', linewidth=2.5, label=eth, markersize=8, color=colors[eth])
+            marker='o', linewidth=1.5, label=eth, markersize=6, color=colors[eth])
 
 ax.set_xlabel('Model', fontsize=11, fontweight='bold')
 ax.set_ylabel('Mean Absolute Error (MAE)', fontsize=11, fontweight='bold')
@@ -102,8 +102,8 @@ for idx, eth in enumerate(ethnicities):
 
         # Use same color (ethnicity), different line styles for gender
         ax.plot(model_labels, mae_values,
-                linestyle=gender_linestyles[gender], linewidth=2.5,
-                label=gender, marker='o', markersize=6, color=colors[eth])
+                linestyle=gender_linestyles[gender], linewidth=1.5,
+                label=gender, marker='o', markersize=5, color=colors[eth])
 
     ax.set_title(eth, fontsize=11, fontweight='bold')
     ax.set_ylabel('MAE', fontsize=10)
@@ -142,10 +142,11 @@ y_min = min(all_mae_values) * 0.9  # Subtract 10% padding
 
 fig, axes = plt.subplots(2, 5, figsize=(18, 8))
 
-plot_idx = 0
-for eth in ethnicities:
-    for gender in ['Male', 'Female']:
-        ax = axes[plot_idx // 5, plot_idx % 5]
+# Top row: Male for each ethnicity
+# Bottom row: Female for each ethnicity
+for col_idx, eth in enumerate(ethnicities):
+    for row_idx, gender in enumerate(['Male', 'Female']):
+        ax = axes[row_idx, col_idx]
 
         for age in ages:
             mae_values = []
@@ -158,8 +159,8 @@ for eth in ethnicities:
 
             # Use same color (ethnicity), different line styles for age groups
             ax.plot(model_labels, mae_values,
-                    linestyle=age_linestyles[age], linewidth=2.5,
-                    label=age, marker='o', markersize=5, color=colors[eth])
+                    linestyle=age_linestyles[age], linewidth=1.5,
+                    label=age, marker='o', markersize=4, color=colors[eth])
 
         ax.set_title(f'{eth} - {gender}', fontsize=10, fontweight='bold')
         ax.set_ylabel('MAE', fontsize=9)
@@ -168,8 +169,6 @@ for eth in ethnicities:
         ax.legend(fontsize=8, loc='best')
         ax.grid(True, alpha=0.3)
         ax.tick_params(axis='x', rotation=45, labelsize=8)
-
-        plot_idx += 1
 
 plt.tight_layout()
 plt.show()
