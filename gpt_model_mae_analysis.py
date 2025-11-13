@@ -106,8 +106,6 @@ for idx, eth in enumerate(ethnicities):
                 label=gender, marker='o', markersize=5, color=colors[eth])
 
     ax.set_title(eth, fontsize=11, fontweight='bold')
-    ax.set_ylabel('MAE', fontsize=10)
-    ax.set_xlabel('Model', fontsize=10)
     ax.set_ylim(y_min, y_max)  # Consistent y-axis across all subplots
     ax.legend(fontsize=9)
     ax.grid(True, alpha=0.3)
@@ -163,12 +161,15 @@ for col_idx, eth in enumerate(ethnicities):
                     label=age, marker='o', markersize=4, color=colors[eth])
 
         ax.set_title(f'{eth} - {gender}', fontsize=10, fontweight='bold')
-        ax.set_ylabel('MAE', fontsize=9)
-        ax.set_xlabel('Model', fontsize=9)
         ax.set_ylim(y_min, y_max)  # Consistent y-axis across all subplots
         ax.legend(fontsize=8, loc='best')
         ax.grid(True, alpha=0.3)
-        ax.tick_params(axis='x', rotation=45, labelsize=8)
+
+        # Only show x-axis labels on bottom row
+        if row_idx == 0:  # Top row
+            ax.tick_params(axis='x', labelbottom=False)
+        else:  # Bottom row
+            ax.tick_params(axis='x', rotation=45, labelsize=8)
 
 plt.tight_layout()
 plt.show()
