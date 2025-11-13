@@ -37,18 +37,18 @@ ethnicities = ['EU', 'Maori', 'Pacific', 'Asian', 'MELAA']
 colors = {'EU': '#1f77b4', 'Maori': '#ff7f0e', 'Pacific': '#2ca02c',
           'Asian': '#d62728', 'MELAA': '#9467bd'}
 
-# Different markers for gender (Graph 2)
-gender_markers = {'Male': 'o', 'Female': 's'}  # circle for Male, square for Female
+# Different line styles for gender (Graph 2)
+gender_linestyles = {'Male': '-', 'Female': '--'}  # solid for Male, dashed for Female
 
-# Different markers for age groups (Graph 3)
-age_markers = {'15-29': 'o', '30-64': 's', '65+': '^'}  # circle, square, triangle
+# Different line styles for age groups (Graph 3)
+age_linestyles = {'15-29': '-', '30-64': '--', '65+': ':'}  # solid, dashed, dotted
 
 # ============================================================================
 # GRAPH 1: Ethnicity x Model
 # ============================================================================
 
 print("Generating GRAPH 1: Ethnicity x Model...")
-fig, ax = plt.subplots(figsize=(8, 5))
+fig, ax = plt.subplots(figsize=(10, 4))
 
 for eth in ethnicities:
     mae_values = []
@@ -100,10 +100,10 @@ for idx, eth in enumerate(ethnicities):
                             (mae_ethgen['Gender'] == gender)]['MAE'].mean()
             mae_values.append(val)
 
-        # Use same color (ethnicity), different markers for gender
+        # Use same color (ethnicity), different line styles for gender
         ax.plot(model_labels, mae_values,
-                marker=gender_markers[gender], linewidth=2,
-                label=gender, markersize=7, color=colors[eth])
+                linestyle=gender_linestyles[gender], linewidth=2.5,
+                label=gender, marker='o', markersize=6, color=colors[eth])
 
     ax.set_title(eth, fontsize=11, fontweight='bold')
     ax.set_ylabel('MAE', fontsize=10)
@@ -140,12 +140,12 @@ for eth in ethnicities:
 y_max = max(all_mae_values) * 1.1  # Add 10% padding
 y_min = min(all_mae_values) * 0.9  # Subtract 10% padding
 
-fig, axes = plt.subplots(5, 2, figsize=(12, 14))
+fig, axes = plt.subplots(2, 5, figsize=(18, 8))
 
 plot_idx = 0
 for eth in ethnicities:
     for gender in ['Male', 'Female']:
-        ax = axes[plot_idx // 2, plot_idx % 2]
+        ax = axes[plot_idx // 5, plot_idx % 5]
 
         for age in ages:
             mae_values = []
@@ -156,10 +156,10 @@ for eth in ethnicities:
                                    (mae_ethgenage['Age'] == age)]['MAE'].mean()
                 mae_values.append(val)
 
-            # Use same color (ethnicity), different markers for age groups
+            # Use same color (ethnicity), different line styles for age groups
             ax.plot(model_labels, mae_values,
-                    marker=age_markers[age], linewidth=2,
-                    label=age, markersize=6, color=colors[eth])
+                    linestyle=age_linestyles[age], linewidth=2.5,
+                    label=age, marker='o', markersize=5, color=colors[eth])
 
         ax.set_title(f'{eth} - {gender}', fontsize=10, fontweight='bold')
         ax.set_ylabel('MAE', fontsize=9)
@@ -178,5 +178,5 @@ print("\nAll graphs generated successfully!")
 print(f"\nColor scheme for ethnicities:")
 for eth, color in colors.items():
     print(f"  {eth}: {color}")
-print(f"\nGender markers (Graph 2): Male=circle, Female=square")
-print(f"Age markers (Graph 3): 15-29=circle, 30-64=square, 65+=triangle")
+print(f"\nGender line styles (Graph 2): Male=solid (—), Female=dashed (- -)")
+print(f"Age line styles (Graph 3): 15-29=solid (—), 30-64=dashed (- -), 65+=dotted (···)")
